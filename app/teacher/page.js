@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import TeacherForm from "./component/TeacherForm"
 import TeacherList from "./component/TeacherList"
-import { getTeachers } from "./lib/api"
+import { getTeachers } from "../lib/api"
 
 export default function Page() {
   const [teachers, setTeachers] = useState([])
