@@ -5,6 +5,7 @@ import { createStudent, getClass } from "../lib/api"
 
 export default function StudentForm({ reload }) {
   const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
   const [classId, setClassId] = useState("")
   const [classes, setClasses] = useState([])
 
@@ -22,10 +23,12 @@ export default function StudentForm({ reload }) {
 
     await createStudent({
       name,
+      email,
       class_id: Number(classId),
     })
 
     setName("")
+     setEmail("")
     setClassId("")
     reload()
   }
@@ -45,7 +48,17 @@ export default function StudentForm({ reload }) {
             className="text-black w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
         </div>
-
+  <div className="space-y-1">
+          <label className="text-sm font-medium text-gray-700">
+            Email
+          </label>
+          <input
+            placeholder="Nhập tên học sinh"
+            value={email}
+            onChange={e => setName(e.target.value)}
+            className="text-black w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          />
+        </div>
         <div className="space-y-1">
           <label className="text-sm font-medium text-gray-700">
             Lớp

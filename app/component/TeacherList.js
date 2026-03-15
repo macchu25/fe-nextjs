@@ -17,10 +17,12 @@ const TeacherList = forwardRef(function TeacherList(_, ref) {
   
   useImperativeHandle(ref, () => ({ reload: loadTeachers }))
 
-  useEffect(() => {
-    loadTeachers()
-  }, [loadTeachers])
-
+useEffect(() => {
+  const fetchData = async () => {
+    await loadTeachers(); 
+  }
+  fetchData();
+}, []); 
   const handleDelete = async (id) => {
     await deleteTeachers(id)
     await loadTeachers()

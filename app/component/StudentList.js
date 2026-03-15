@@ -28,9 +28,13 @@ const StudentList = forwardRef(function StudentList(_, ref) {
   useImperativeHandle(ref, () => ({ reload: loadStudents }))
 
   // Load students lần đầu và khi reload
-  useEffect(() => {
-    loadStudents()
-  }, [loadStudents])
+ 
+useEffect(() => {
+  const fetchData = async () => {
+    await loadStudents(); 
+  }
+  fetchData();
+}, []); 
 
   const handleDelete = async (id) => {
     await deleteStudent(id)
@@ -77,6 +81,13 @@ const StudentList = forwardRef(function StudentList(_, ref) {
                         onChange={e => setTempData(prev => ({ ...prev, name: e.target.value }))}
                         className="border rounded px-2 py-1"
                         placeholder="Name"
+                      />
+                        <input
+                        type="text"
+                        value={tempData.email || s.email}
+                        onChange={e => setTempData(prev => ({ ...prev, email: e.target.value }))}
+                        className="border rounded px-2 py-1"
+                        placeholder="Email"
                       />
                       <select
                         value={tempData.class_id || s.class_id}

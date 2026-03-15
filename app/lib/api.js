@@ -1,7 +1,6 @@
 export const TEACHER_API_URL = process.env.NEXT_PUBLIC_TEACHER_API_URL;
 export const CLASS_API_URL = process.env.NEXT_PUBLIC_CLASS_API_URL;
 export const STUDENT_API_URL = process.env.NEXT_PUBLIC_STUDENT_API_URL;
-
 export async function getTeachers() {
     const res =await fetch(TEACHER_API_URL)
     return res.json()
