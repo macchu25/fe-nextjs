@@ -13,7 +13,7 @@ const StudentList = forwardRef(function StudentList(_, ref) {
   // Load classes
   useEffect(() => {
     async function loadClasses() {
-      const data = await getClass()
+      const data = await getClass()                                                            
       setClasses(Array.isArray(data) ? data : [])
     }
     loadClasses()
@@ -41,11 +41,12 @@ useEffect(() => {
   }
 
   const handleSave = async (id) => {
-    await updateStudent(id, tempData)
-    setEditingId(null)
-    setTempData({})
-    await loadStudents()
-  }
+     await updateStudent(id, tempData) // gọi API update
+     setEditingId(null)
+     setTempData({})
+     await loadStudents()
+   }
+ 
 
   return (
     <section className="mt-8 rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
