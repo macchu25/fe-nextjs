@@ -98,7 +98,7 @@ const ClassList = forwardRef(function ClassList(_, ref) {
                   {isEditing ? (
                     <select
                       value={tempData.teacher_id ?? c.teacher_id}
-                      onChange={e => setTempData(prev => ({ ...prev, teacher_id: e.target.value }))}
+                      onChange={e => setTempData(prev => ({ ...prev,   teacher_id: Number(e.target.value) }))}
                       className="border rounded px-2 py-1"
                     >
                       <option value="">Chọn giáo viên</option>
