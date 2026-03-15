@@ -27,7 +27,6 @@ const StudentList = forwardRef(function StudentList(_, ref) {
   
   useImperativeHandle(ref, () => ({ reload: loadStudents }))
 
-  // Load students lần đầu và khi reload
  
 useEffect(() => {
   const fetchData = async () => {
@@ -102,10 +101,12 @@ useEffect(() => {
                     </>
                   ) : (
                     <>
-                      <p className="font-medium text-gray-900">{s.name}</p>
+                      <p className="font-medium text-gray-900">Tên: {s.name}</p>
+                      <p className="text-xs text-gray-500">Email: {s.email} </p>
                       <p className="text-xs text-gray-500">
                         Class: {classes.find(c => c.id === Number(s.class_id))?.name || "Unknown"}
                       </p>
+
                     </>
                   )}
                 </div>
