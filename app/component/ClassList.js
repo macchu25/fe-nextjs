@@ -108,7 +108,7 @@ const ClassList = forwardRef(function ClassList(_, ref) {
                     </select>
                   ) : (
                     <p className="text-xs text-gray-500">
-               Teacher: {teachers.find(c => c.id === Number(t.teacher_id))?.name || "Unknown"}
+                         Teacher: {teachers.find(t => t.id === Number(c.teacher_id))?.name || "Unknown"}
                     </p>
                   )}
                 </div>
