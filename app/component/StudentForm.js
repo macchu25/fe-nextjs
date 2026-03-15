@@ -53,9 +53,9 @@ export default function StudentForm({ reload }) {
             Email
           </label>
           <input
-            placeholder="Nhập tên học sinh"
+            placeholder="Nhập email học sinh"
             value={email}
-            onChange={e => setName(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             className="text-black w-full rounded-md border border-gray-300 px-3 py-2 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
         </div>
