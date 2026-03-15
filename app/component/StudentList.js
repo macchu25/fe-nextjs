@@ -1,9 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react"
 import { getStudents, deleteStudent, updateStudent, getClass } from "../lib/api"
 
-export default function StudentList() {
+const StudentList = forwardRef(function StudentList(_, ref) {
 
   const [students, setStudents] = useState([])
   const [classes, setClasses] = useState([])
@@ -19,27 +19,29 @@ export default function StudentList() {
     loadClasses()
   }, [])
 
-  // Load students
-  useEffect(() => {
-    async function loadStudents() {
-      const data = await getStudents()
-      setStudents(Array.isArray(data) ? data : [])
-    }
-    loadStudents()
+  const loadStudents = useCallback(async () => {
+    const data = await getStudents()
+    setStudents(Array.isArray(data) ? data : [])
   }, [])
+
+  
+  useImperativeHandle(ref, () => ({ reload: loadStudents }))
+
+  // Load students lần đầu và khi reload
+  useEffect(() => {
+    loadStudents()
+  }, [loadStudents])
 
   const handleDelete = async (id) => {
     await deleteStudent(id)
-    const data = await getStudents()
-    setStudents(Array.isArray(data) ? data : [])
+    await loadStudents()
   }
 
   const handleSave = async (id) => {
     await updateStudent(id, tempData)
     setEditingId(null)
     setTempData({})
-    const data = await getStudents()
-    setStudents(Array.isArray(data) ? data : [])
+    await loadStudents()
   }
 
   return (
@@ -138,4 +140,6 @@ export default function StudentList() {
 
     </section>
   )
-}
+})
+
+export default StudentList

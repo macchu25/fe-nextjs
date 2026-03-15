@@ -1,35 +1,36 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react"
 import { getTeachers, deleteTeachers, updateTeachers } from "../lib/api"
 
-export default function TeacherList() {
+const TeacherList = forwardRef(function TeacherList(_, ref) {
 
   const [teachers, setTeachers] = useState([])
   const [editingId, setEditingId] = useState(null)
   const [tempData, setTempData] = useState({}) // dữ liệu tạm thời khi edit
 
-  // Load teachers
-  useEffect(() => {
-    async function loadTeachers() {
-      const data = await getTeachers()
-      setTeachers(Array.isArray(data) ? data : [])
-    }
-    loadTeachers()
+  const loadTeachers = useCallback(async () => {
+    const data = await getTeachers()
+    setTeachers(Array.isArray(data) ? data : [])
   }, [])
+
+  
+  useImperativeHandle(ref, () => ({ reload: loadTeachers }))
+
+  useEffect(() => {
+    loadTeachers()
+  }, [loadTeachers])
 
   const handleDelete = async (id) => {
     await deleteTeachers(id)
-    const data = await getTeachers()
-    setTeachers(Array.isArray(data) ? data : [])
+    await loadTeachers()
   }
 
   const handleSave = async (id) => {
     await updateTeachers(id, tempData) // gọi API update
     setEditingId(null)
     setTempData({})
-    const data = await getTeachers()
-    setTeachers(Array.isArray(data) ? data : [])
+    await loadTeachers()
   }
 
   return (
@@ -129,4 +130,6 @@ export default function TeacherList() {
       )}
     </section>
   )
-}
+})
+
+export default TeacherList

@@ -11,7 +11,7 @@ export default function TeacherPage() {
     <div className="p-10 space-y-6 bg-white min-h-screen">
       <h1 className="text-3xl font-bold text-black text-center">Teacher</h1>
 
-      <TeacherForm reload={() => listRef.current?.()} />
+      <TeacherForm reload={() => listRef.current?.reload()} />
       <TeacherList ref={listRef} />
     </div>
   )
