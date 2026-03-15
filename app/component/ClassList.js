@@ -97,7 +97,7 @@ const ClassList = forwardRef(function ClassList(_, ref) {
                   {/* Teacher */}
                   {isEditing ? (
                     <select
-                      value={tempData.teacher_id || c.teacher_id}
+                      value={tempData.teacher_id ?? c.teacher_id}
                       onChange={e => setTempData(prev => ({ ...prev, teacher_id: e.target.value }))}
                       className="border rounded px-2 py-1"
                     >
