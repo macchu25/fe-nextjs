@@ -41,11 +41,21 @@ useEffect(() => {
   }
 
   const handleSave = async (id) => {
-     await updateStudent(id, tempData) // gọi API update
-     setEditingId(null)
-     setTempData({})
-     await loadStudents()
-   }
+    // Gửi đầy đủ dữ liệu đã edit, fallback sang dữ liệu cũ nếu trường chưa được sửa
+    const current = students.find(s => s.id === id)
+    if (!current) return
+
+    const payload = {
+      name: tempData.name ?? current.name,
+      email: tempData.email ?? current.email,
+      class_id: Number(tempData.class_id ?? current.class_id),
+    }
+
+    await updateStudent(id, payload)
+    setEditingId(null)
+    setTempData({})
+    await loadStudents()
+  }
  
 
   return (
@@ -77,21 +87,26 @@ useEffect(() => {
                     <>
                       <input
                         type="text"
-                        value={tempData.name || s.name}
+                        value={tempData.name ?? s.name}
                         onChange={e => setTempData(prev => ({ ...prev, name: e.target.value }))}
                         className="border rounded px-2 py-1"
                         placeholder="Name"
                       />
-                        <input
+                      <input
                         type="text"
-                        value={tempData.email || s.email}
+                        value={tempData.email ?? s.email}
                         onChange={e => setTempData(prev => ({ ...prev, email: e.target.value }))}
                         className="border rounded px-2 py-1"
                         placeholder="Email"
                       />
                       <select
-                        value={tempData.class_id || s.class_id}
-                        onChange={e => setTempData(prev => ({ ...prev, class_id: e.target.value }))}
+                        value={tempData.class_id ?? s.class_id}
+                        onChange={e =>
+                          setTempData(prev => ({
+                            ...prev,
+                            class_id: e.target.value,
+                          }))
+                        }
                         className="border rounded px-2 py-1"
                       >
                         <option value="">Chọn lớp</option>
@@ -131,7 +146,14 @@ useEffect(() => {
                   ) : (
                     <>
                       <button
-                        onClick={() => { setEditingId(s.id); setTempData({ name: s.name, class_id: s.class_id }) }}
+                        onClick={() => {
+                          setEditingId(s.id)
+                          setTempData({
+                            name: s.name,
+                            email: s.email,
+                            class_id: s.class_id,
+                          })
+                        }}
                         className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-xs"
                       >
                         Edit
