@@ -1,35 +1,24 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { getTeachers, deleteTeachers, updateTeachers } from "../lib/api"
-
-export default function TeacherList() {
-
-  const [teachers, setTeachers] = useState([])
+export default function TeacherList({ teachers, setTeachers }) {
   const [editingId, setEditingId] = useState(null)
-  const [tempData, setTempData] = useState({}) // dữ liệu tạm thời khi edit
+  const [tempData, setTempData] = useState({})
 
-  // Load teachers
-  useEffect(() => {
-    async function loadTeachers() {
-      const data = await getTeachers()
-      setTeachers(Array.isArray(data) ? data : [])
-    }
-    loadTeachers()
-  }, [])
-
-  const handleDelete = async (id) => {
-    await deleteTeachers(id)
-    const data = await getTeachers()
-    setTeachers(Array.isArray(data) ? data : [])
+  const handleDelete = async id => {
+    await fetch(`http://localhost:8080/teachers/${id}`, { method: "DELETE" })
+    setTeachers(prev => prev.filter(t => t.id !== id))
   }
 
-  const handleSave = async (id) => {
-    await updateTeachers(id, tempData) // gọi API update
+  const handleSave = async id => {
+    const res = await fetch(`http://localhost:8080/teachers/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(tempData),
+    })
+    const updated = await res.json()
+    setTeachers(prev => prev.map(t => (t.id === id ? updated : t)))
     setEditingId(null)
     setTempData({})
-    const data = await getTeachers()
-    setTeachers(Array.isArray(data) ? data : [])
   }
 
   return (

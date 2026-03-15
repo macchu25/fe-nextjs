@@ -6,10 +6,9 @@ import { deleteClass, getClass, getTeachers, updateClass } from "../lib/api"
 const ClassList = forwardRef(function ClassList(_, ref) {
   const [classes, setClasses] = useState([])
   const [teachers, setTeachers] = useState([])
-  const [editingId, setEditingId] = useState(null) // id row đang edit
+  const [editingId, setEditingId] = useState(null)
   const [tempData, setTempData] = useState({}) // dữ liệu tạm thời khi edit
 
-  // Load teachers once (async inside effect)
   useEffect(() => {
     async function fetchTeachers() {
       try {
@@ -22,7 +21,6 @@ const ClassList = forwardRef(function ClassList(_, ref) {
     fetchTeachers()
   }, [])
 
-  // Load classes (wrap với useCallback để ESLint không cảnh báo)
   const loadClasses = useCallback(async () => {
     try {
       const data = await getClass()
@@ -34,7 +32,6 @@ const ClassList = forwardRef(function ClassList(_, ref) {
 
   useImperativeHandle(ref, () => ({ reload: loadClasses }))
 
-  // Load classes lần đầu (async inside effect)
   useEffect(() => {
     async function fetchClasses() {
       await loadClasses()
@@ -55,7 +52,7 @@ const ClassList = forwardRef(function ClassList(_, ref) {
   // Save row edit
   const handleSave = async (id) => {
     try {
-      await updateClass(id, tempData) // gọi API update
+      await updateClass(id, tempData) 
       setEditingId(null)
       setTempData({})
       await loadClasses()
@@ -117,7 +114,7 @@ const ClassList = forwardRef(function ClassList(_, ref) {
                 </div>
 
                 <div className="flex gap-2">
-                  {isEditing ? (
+                  {isEditing ? (  
                     <>
                       <button
                         onClick={() => handleSave(c.id)}
